@@ -1,0 +1,456 @@
+{
+ "street": {
+  "V": 2242,
+  "E": 2936,
+  "C": 14,
+  "F_bounded": 708,
+  "euler_residual": 0,
+  "mu": 708,
+  "alpha_meshedness": 0.1580709979906229,
+  "beta": 1.3095450490633362,
+  "gamma": 0.4369047619047619,
+  "mean_degree": 2.6190900981266725,
+  "degree_hist": {
+   "1": 555,
+   "2": 161,
+   "3": 1111,
+   "4": 413,
+   "5": 2
+  },
+  "n_bridges": 754,
+  "bridge_length_m": 58925.140868821676,
+  "total_length_m": 248913.95425855296,
+  "orientation_entropy": 3.3968088908263154,
+  "orientation_order_phi": 0.16272998995764365,
+  "orientation_hist": [
+   0.021990829581354,
+   0.019547186966000888,
+   0.021189941465277962,
+   0.009293802861158388,
+   0.01943347345343447,
+   0.014833269117444509,
+   0.04156223804846857,
+   0.08943690761309178,
+   0.03732045167030732,
+   0.0341343347148598,
+   0.021610969467344417,
+   0.035266759388541145,
+   0.009918673769671907,
+   0.013550738102771437,
+   0.01011020072506908,
+   0.026184048413260202,
+   0.05060380913554554,
+   0.024012365506398636,
+   0.021990829581354,
+   0.019547186966000888,
+   0.021189941465277962,
+   0.009293802861158388,
+   0.01943347345343447,
+   0.014833269117444509,
+   0.04156223804846857,
+   0.08943690761309178,
+   0.03732045167030732,
+   0.0341343347148598,
+   0.021610969467344417,
+   0.035266759388541145,
+   0.009918673769671907,
+   0.013550738102771437,
+   0.01011020072506908,
+   0.026184048413260202,
+   0.05060380913554554,
+   0.024012365506398636
+  ],
+  "right_angle_share": 0.5481481481481482,
+  "planarity_test": true
+ },
+ "demand": {
+  "buildings": 13006,
+  "served": 12378,
+  "residents": 89082.0,
+  "units": 53486,
+  "water_m3_day": 50354.865,
+  "water_peak_ls": 1457.02734375,
+  "elec_kw_undiversified": 292045.1726358174,
+  "gas_peak_m3h": 2489.94375,
+  "land_use": {
+   "residential": 8722,
+   "mixed": 1631,
+   "industrial": 957,
+   "commercial": 748,
+   "public": 320
+  },
+  "land_use_source": {
+   "default": 8126,
+   "landuse": 1752,
+   "quartier": 1631,
+   "poi": 487,
+   "tag": 382
+  },
+  "floors_source": {
+   "area_class": 11835,
+   "osm": 543
+  },
+  "hazard_buildings": 162
+ },
+ "floor_area_per_dwelling_m2": 288.6175348746028,
+ "taps": {
+  "n": 12378,
+  "perpendicular": 0.9106479237356601,
+  "shifted_over_1m": 1369,
+  "access_changed": 116,
+  "non_planar": 0,
+  "overflow_moved": 6,
+  "uncross_swaps": 1536,
+  "shared": 223,
+  "service_crossings_left": 0,
+  "street_clipping_left": 0,
+  "retapped": 5
+ },
+ "corridor_graph": {
+  "V": 14375,
+  "E": 15082
+ },
+ "water": {
+  "sources": [
+   181,
+   554,
+   1361
+  ],
+  "total_peak_ls": 1457.027343749914,
+  "steiner_length_m": 138477.79590522315,
+  "length_m": 144326.0010624017,
+  "augmentation": {
+   "faces": [
+    216,
+    3,
+    439,
+    66,
+    5,
+    509,
+    177,
+    420,
+    8,
+    625,
+    14,
+    429,
+    418,
+    564,
+    218,
+    186,
+    102,
+    628,
+    122,
+    548,
+    479,
+    144,
+    228,
+    130,
+    612,
+    515,
+    511,
+    417,
+    611,
+    11,
+    44,
+    229,
+    489,
+    379,
+    444,
+    689,
+    234,
+    419,
+    463,
+    512,
+    565,
+    416,
+    380,
+    72,
+    34,
+    478,
+    194,
+    459,
+    111,
+    441,
+    462,
+    442,
+    24,
+    385,
+    460,
+    504,
+    607,
+    486,
+    503,
+    423,
+    440,
+    377,
+    201,
+    632,
+    35,
+    685,
+    488,
+    6,
+    518,
+    7,
+    623,
+    110,
+    176
+   ],
+   "added_m": 5796.205157178366,
+   "trunk_bridges_left": 107,
+   "trunk_bridges_in_G0_bridges": 85,
+   "trunk_bridges_face_too_long": 22
+  },
+  "n_split": 104,
+  "n_split_links": 104,
+  "n_subdivided": 0,
+  "gga_iterations": 2,
+  "sizing_passes": 19,
+  "min_pressure_mwc": 20.712661392730297,
+  "taps_below_min": 0,
+  "taps_static_infeasible": 0,
+  "source_elevations_m": [
+   290.139466333424,
+   290.23833741933515,
+   281.3951469512489
+  ],
+  "max_pressure_mwc": 58.66703556679403,
+  "max_velocity_ms": 2.468723756949487,
+  "max_gradient_m_per_km": 9.998416880528005,
+  "feasible": true,
+  "violations": {
+   "velocity": 0,
+   "gradient": 0,
+   "low_pressure": 0,
+   "at_max_size": 0
+  },
+  "fire": {
+   "node": "('t', 'GOM-000033')",
+   "pressure_normal_mwc": 21.357356920080804,
+   "residual_mwc": 20.503094826763572,
+   "min_pressure_other_mwc": 19.858399299413122
+  },
+  "mu": 98,
+  "K_lower_bound": 3,
+  "K": 3,
+  "q_max_per_inflow_ls": 725.6581775416913,
+  "head_margin_m": 25.303343258463258
+ },
+ "electricity": {
+  "n_transformers": 362,
+  "n_mv_customers": 40,
+  "mv_customer_kva": 29177.575494897606,
+  "installed_kva": 188860,
+  "diversified_kva": 133335.7713287535,
+  "max_loading": 0.7996199490429771,
+  "lv_length_m": 138889.44616221948,
+  "n_split": 73,
+  "n_split_links": 73,
+  "n_subdivided": 0,
+  "max_drop_pct": 4.998855750481484,
+  "taps_drop_infeasible": 0,
+  "max_reach_m": 299.43198669752394,
+  "max_feeders": 4,
+  "n_lv_ties": 523,
+  "mv_rings": 24,
+  "siting_rounds": 3,
+  "mv_length_m": 206566.46773656475,
+  "mu_closed": 0,
+  "mu_with_ties": 162
+ },
+ "gas": {
+  "n_regulators": 22,
+  "total_peak_m3h": 2489.9437499997616,
+  "lp_length_m": 142421.5662128171,
+  "mp_length_m": 20590.1863421074,
+  "n_split": 90,
+  "lp": {
+   "min_pressure_mbar": 87.51571162817518,
+   "taps_below_min": 0,
+   "max_gradient_mbar_per_100m": 0.9998256885753506,
+   "max_q_over_d": 1.162172916666667
+  },
+  "mp": {
+   "min_regulator_inlet_bar_g": 1.743877139993341,
+   "max_velocity_ms": 10.632615794248006
+  },
+  "mu_lp": 0,
+  "mu_mp": 0,
+  "max_zone_reach_m": 968.5880459538488,
+  "max_regulator_load_m3h": 204.28124999999724,
+  "min_regulator_spacing_m": 509.6974738985343,
+  "spacing_removed": 0,
+  "spacing_conflicts": 0
+ },
+ "crossings": {
+  "services": {
+   "gas": 12155,
+   "electricity": 12148,
+   "water": 12155
+  },
+  "road": {
+   "gas": {
+    "secondary": 377,
+    "service": 1170,
+    "residential": 3902,
+    "tertiary": 1050,
+    "primary": 299
+   },
+   "water": {
+    "secondary": 158,
+    "service": 769,
+    "residential": 2397,
+    "tertiary": 638,
+    "primary": 60
+   },
+   "electricity": {
+    "secondary": 156,
+    "service": 474,
+    "residential": 2107,
+    "tertiary": 541,
+    "primary": 88
+   }
+  },
+  "road_service": {
+   "gas": 5628,
+   "water": 3011,
+   "electricity": 2311
+  },
+  "road_junction": {
+   "gas": 1170,
+   "electricity": 1055,
+   "water": 1011
+  },
+  "inter": {
+   "electricity-gas": 13110,
+   "gas-water": 13242,
+   "electricity-water": 12678
+  },
+  "inter_service": 36299,
+  "inter_junction": 2731,
+  "c2_shifted": {
+   "water": 154,
+   "gas": 387,
+   "electricity": 132
+  },
+  "c2_unavoidable": {
+   "gas": 28,
+   "electricity": 11,
+   "water": 10
+  },
+  "casings": {
+   "gas": 676,
+   "water": 218,
+   "electricity": 244
+  },
+  "trenchless": {
+   "gas": 299,
+   "water": 60,
+   "electricity": 88
+  },
+  "deepening": {
+   "electricity-gas": {
+    "crossings": 13110,
+    "depth_gap_m": 0.3,
+    "clearance_m": 0.3,
+    "deepening_points": 0,
+    "lowering_m": 0.0
+   },
+   "gas-water": {
+    "crossings": 13242,
+    "depth_gap_m": 0.2,
+    "clearance_m": 0.3,
+    "deepening_points": 13242,
+    "lowering_m": 0.1
+   },
+   "electricity-water": {
+    "crossings": 12678,
+    "depth_gap_m": 0.1,
+    "clearance_m": 0.3,
+    "deepening_points": 12678,
+    "lowering_m": 0.2
+   }
+  },
+  "lane_outside_verge_sides": 0,
+  "gas_building_clearance_violations": 298,
+  "gas_on_blocked_side_avoidable": 0,
+  "gas_edges_blocked_both_sides": 178,
+  "gas_buildings_within_clearance_of_kerb": 1793,
+  "kerb_order": [
+   "gas",
+   "electricity",
+   "water"
+  ],
+  "avoidability": {
+   "current": {
+    "gas": 298,
+    "verge": 0,
+    "service": {
+     "gas": 3868,
+     "electricity": 896,
+     "water": 55
+    }
+   },
+   "minimum": {
+    "gas": 298,
+    "verge": 0,
+    "service": {
+     "gas": 3868,
+     "electricity": 896,
+     "water": 55
+    }
+   },
+   "edges_above_minimum": 0
+  },
+  "kerb_offset_m": 0.5,
+  "dual_mains": {
+   "gas": 67,
+   "electricity": 138,
+   "water": 72
+  },
+  "dual_mains_length_m": {
+   "gas": 5694.485648628001,
+   "electricity": 11278.8766488616,
+   "water": 3636.4370467234485
+  },
+  "rail_crossings": {
+   "gas": 11,
+   "electricity": 10,
+   "water": 9
+  },
+  "watercourse_crossings": {
+   "gas": 1,
+   "electricity": 1,
+   "water": 1
+  }
+ },
+ "side_assignment_cost": [
+  11589656.0,
+  6458020.022388791,
+  6455714.690374048,
+  6455690.818945264,
+  6455690.818945264,
+  6463202.799344213
+ ],
+ "methods": {
+  "steiner": {
+   "length_m": 138477.79590522315,
+   "cost_m": 182989.8630491995,
+   "edges": 13209
+  },
+  "mst": {
+   "length_m": 140268.9994432398,
+   "cost_m": 184694.82760312926,
+   "edges": 13334
+  },
+  "spt": {
+   "length_m": 160126.3542355626,
+   "cost_m": 212191.59614888215,
+   "edges": 13443
+  }
+ },
+ "validation": {
+  "passed": 78,
+  "total": 78
+ },
+ "runtime_s": 509.59652400016785
+}

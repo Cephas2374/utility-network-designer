@@ -1,0 +1,15 @@
+{
+  "commune_boundary": 1,
+  "buildings": 13006,
+  "address_points": 13006,
+  "street_edges": 2936,
+  "streets": 949,
+  "blocks": 1103,
+  "quartiers": 9,
+  "faces": 780,
+  "water": 129,
+  "pois": 1305,
+  "landuse": 98,
+  "railways": 35,
+  "dem": "S05E015.hgt"
+}

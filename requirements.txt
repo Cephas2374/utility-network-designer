@@ -1,0 +1,8 @@
+numpy
+scipy
+pandas
+shapely>=2
+geopandas
+networkx
+matplotlib
+pyproj

@@ -1,0 +1,17 @@
+[general]
+name=Utility Network Designer (graph engine)
+qgisMinimumVersion=3.28
+description=Designs water, electricity and gas distribution networks on the plane street graph of a district, validates every design rule, and analyses reliability, crossings and depths.
+about=Processing algorithms around the graph-theoretic engine of the paper series on utility networks for Gombe (Kinshasa): (1) design the three networks from streets, buildings and the district boundary, with every rule of the rule packs checked as a property of plane graphs; (2) analyse the reliability of the water network (valve segments, N-1, district metered areas, fire flow), of the electricity network (LV ties, MV open rings, trench cuts) and the vertical design of the corridor; (3) draw longitudinal profiles, cross-sections, junction plans and single-line diagrams. Requires numpy, scipy, pandas, shapely, geopandas, networkx and matplotlib, which the QGIS installers for Windows ship.
+version=2.0.1
+author=Cephas Bisimwa Mwimangire
+email=bisimwamwim@gmail.com
+tracker=https://github.com/
+repository=https://github.com/
+tags=utility,network,water,electricity,gas,design,graph,planar,infrastructure,processing
+category=Analysis
+experimental=True
+deprecated=False
+hasProcessingProvider=yes
+icon=icon.png
+changelog=2.0.1 Elevation rasters are sampled as in the papers (3x3 mean, bilinear between pixel centres; option "Smooth the DEM"): the plugin now reproduces the Gombe design of papers P1-P4 inside QGIS. 2.0.0 The engine of papers P1-P5 as Processing algorithms; replaces the rule-based routing of version 1.

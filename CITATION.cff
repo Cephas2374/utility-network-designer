@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Utility Network Designer (graph engine)"
+version: "2.0.1"
+date-released: "2026-11-22"
+license: MIT
+authors:
+  - family-names: Mwimangire
+    given-names: Cephas Bisimwa
+    affiliation: "HFT Stuttgart, Germany; Université Évangélique en Afrique (UEA), DR Congo"
+  - family-names: "Bagula Mukengere"
+    given-names: Espoir
+    affiliation: "Université Évangélique en Afrique (UEA), DR Congo"
+keywords: [QGIS, utility networks, planar graph, water distribution, electricity distribution, gas distribution]

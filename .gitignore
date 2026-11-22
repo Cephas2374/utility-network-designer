@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+qgis_plugin/utility_network_graph/lib/
+qgis_plugin/*.zip
+results/*
+!results/gombe/

@@ -1,0 +1,79 @@
+rule,utility,quantity,value,limit,ok,note
+G1,water,crossing pairs in the drawing (net 0),0.0,0,True,{}; 12273 services
+G2,water,planar (net 0),1.0,1,True,"|V|=13345, |E|=13442"
+G3,water,"max degree (junctions, with services)",3.0,3,True,
+G3,water,max degree (supply points),3.0,3,True,
+G4,water,terminals without supply,0.0,0,True,
+G5,water,cyclomatic number mu (net 0),98.0,>=0,True,
+G8,water,longest edge (m),166.7,500,True,
+G9,water,share of perpendicular service taps,0.9143,-,True,the others leave the tap obliquely inside the face
+G9,water,services over the limit above the achievable minimum,0.0,0,True,"limit 100 m; 55 over the limit, 55 at the minimum over all side / dual choices, 55 farther than the limit from every lane (private plot length); P95 57.0 m"
+G9,water,min tap spacing (m),1.0,1.0,True,223 shared services use the tap of a neighbour
+G12,water,main edges off the street graph,0.0,0,True,
+G6,water,trunk bridges left,107.0,107,True,"85 are bridges of G0 (no cycle exists), 22 need a face of more than the loop-chord limit"
+H,water,min pressure at taps (m),20.71,20,True,
+H,water,max velocity (m/s),2.47,2.5,True,
+H,water,max gradient (m/km),10.0,10,True,
+H,water,max pressure (m),58.7,80,True,
+H,water,fire residual at the weakest hydrant (m),20.5,20,True,
+G11,water,max distance to nearest valve along a run (m),99.6,100.0,True,
+G11,water,max distance to nearest hydrant along a run (m),50.0,50.0,True,
+G1,electricity,crossing pairs in the drawing (net 0),0.0,0,True,{}; 12257 services
+G2,electricity,planar (net 0),1.0,1,True,"|V|=13331, |E|=12969"
+G3,electricity,"max degree (junctions, with services)",3.0,3,True,
+G3,electricity,max degree (supply points),4.0,6,True,
+G4,electricity,terminals without supply,0.0,0,True,
+G5,electricity,"cyclomatic number mu (net 0, closed)",0.0,0,True,
+G8,electricity,longest edge (m),189.8,300,True,
+G9,electricity,share of perpendicular service taps,0.9143,-,True,the others leave the tap obliquely inside the face
+G9,electricity,services over the limit above the achievable minimum,0.0,0,True,"limit 50 m; 890 over the limit, 896 at the minimum over all side / dual choices, 880 farther than the limit from every lane (private plot length); P95 54.9 m"
+G9,electricity,min tap spacing (m),1.0,1.0,True,223 shared services use the tap of a neighbour
+G12,electricity,main edges off the street graph,0.0,0,True,
+G4,electricity,MV customer substations not on an MV ring,0.0,0,True,40 MV customers
+G4,electricity,transformers not on an MV ring,0.0,0,True,
+G10,electricity,max network reach (m),299.4,300,True,
+H,electricity,max voltage drop (%),4.999,5,True,
+H,electricity,max transformer loading,0.8,0.8,True,
+G5,electricity,normally-open ties (independent loops when closed),162.0,-,True,
+G3,electricity,max LV feeders per transformer,4.0,6,True,
+G1,gas,crossing pairs in the drawing (net 0),0.0,0,True,{}; 12273 services
+G1,gas,crossing pairs in the drawing (net 1),0.0,0,True,{}; 1743 services
+G2,gas,planar (net 0),1.0,1,True,"|V|=13353, |E|=13331"
+G2,gas,planar (net 1),1.0,1,True,"|V|=1972, |E|=1971"
+G3,gas,"max degree (junctions, with services)",3.0,3,True,
+G3,gas,max degree (supply points),3.0,3,True,
+G4,gas,terminals without supply,0.0,0,True,
+G5,gas,"cyclomatic number mu (net 0, closed)",0.0,0,True,
+G5,gas,"cyclomatic number mu (net 1, closed)",0.0,0,True,
+G8,gas,longest edge (m),203.6,400,True,
+G9,gas,share of perpendicular service taps,0.9143,-,True,the others leave the tap obliquely inside the face
+G9,gas,services over the limit above the achievable minimum,0.0,0,True,"limit 30 m; 3853 over the limit, 3868 at the minimum over all side / dual choices, 3849 farther than the limit from every lane (private plot length); P95 59.9 m"
+G9,gas,min tap spacing (m),1.0,1.0,True,223 shared services use the tap of a neighbour
+G12,gas,main edges off the street graph,0.0,0,True,
+G10,gas,max LP zone reach (m),968.6,1000,True,
+H,gas,min LP pressure at taps (mbar),87.5,20.0,True,
+H,gas,max LP gradient (mbar/100 m),1.0,1.0,True,
+H,gas,min MP pressure at regulators (bar g),1.744,1.0,True,
+H,gas,max MP velocity (m/s),10.63,20,True,
+H,gas,Renouard validity max Q/D,1.162,150,True,
+G11,gas,min district regulator spacing (m),509.7,500,True,
+H,gas,max regulator load (m3/h),204.3,1500,True,
+G11,gas,max distance to nearest LP valve along a run (m),148.3,150.0,True,
+G11,gas,max distance to nearest MP valve along a run (m),147.2,150.0,True,
+G11,gas,max distance to nearest MP shut-off along a run (m),245.3,250.0,True,
+C1,all,non-perpendicular crossings,0.0,0,True,services and legs are drawn perpendicular to the crossed street
+C2,water,service crossings within 10 m of a junction on short edges,10.0,-,True,154 legs shifted to 10 m
+C3,water,cased road crossings,218.0,-,True,trenchless 60
+C6,water,road crossings (services + junction legs),4022.0,min,True,"services 3011, legs 1011"
+C2,electricity,service crossings within 10 m of a junction on short edges,11.0,-,True,132 legs shifted to 10 m
+C3,electricity,cased road crossings,244.0,-,True,trenchless 88
+C6,electricity,road crossings (services + junction legs),3366.0,min,True,"services 2311, legs 1055"
+C2,gas,service crossings within 10 m of a junction on short edges,28.0,-,True,387 legs shifted to 10 m
+C3,gas,cased road crossings,676.0,-,True,trenchless 299
+C6,gas,road crossings (services + junction legs),6798.0,min,True,"services 5628, legs 1170"
+C4,electricity-gas,inter-utility crossings needing local lowering,0.0,-,True,lower by 0.0 m at 13110 crossings
+C4,gas-water,inter-utility crossings needing local lowering,13242.0,-,True,lower by 0.1 m at 13242 crossings
+C4,electricity-water,inter-utility crossings needing local lowering,12678.0,-,True,lower by 0.2 m at 12678 crossings
+C5/G9,all,street edges whose violations exceed the achievable minimum,0.0,0,True,"exact test over all joint side / dual choices, priority gas clearance > verge > service length"
+C5,all,street sides whose mains need more than the verge width,0.0,0,True,limit = minimum achievable on those edges; compact lanes in kerb order gas / electricity / water
+C5,gas,buildings closer than the clearance to the gas main beside them,298.0,298,True,limit = minimum achievable; 178 street edges have buildings within 1.5 m of the gas lane on both sides
