@@ -14,8 +14,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = Path(__file__).resolve().parent / "utility_network_graph"
+# scripts that write the papers' own numbers and figures, or prepare data from the GeoAdresse project:
+# the plugin never imports them (same list as dev/make_release_repo.py, so the ZIP matches the repository);
+# figures_p4 (drawings algorithm) needs figures_p1_results and figures_p2: they ship
 SKIP = {"make_numbers_p1.py", "make_numbers_p2.py", "make_numbers_p3.py", "make_numbers_p4.py",
-        "figures_p1.py", "prepare_gombe_data.py"}
+        "make_numbers_p5.py", "make_numbers_p5x.py", "figures_p1.py", "figures_p3.py",
+        "prepare_gombe_data.py", "prepare_bukavu_data.py"}
 
 
 def main():

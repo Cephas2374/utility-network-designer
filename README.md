@@ -1,4 +1,4 @@
-# Utility Network Designer (graph engine) — v2.1.0
+# Utility Network Designer (graph engine) — v2.1.1
 
 A QGIS Processing plugin that designs, validates and analyses the **water, electricity and gas
 distribution networks** of a district on its plane street graph, from three layers: streets, buildings
