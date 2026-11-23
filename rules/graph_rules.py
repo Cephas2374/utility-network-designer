@@ -141,6 +141,20 @@ GRAPH_RULES = [
         "repair": None,
     },
     {
+        # Added 2026-11-23 (P5, Bukavu test): services are drawn as straight segments from the tap to
+        # the nearest facade point; G1 checks them against each other and C-rules against streets, but
+        # nothing checked them against the other buildings they pass.  On the design of P1-P4 for Gombe
+        # 4,309 of 12,378 services cross another footprint.  Reported, not yet repaired.
+        "id": "G13",
+        "name": "services_clear_of_buildings",
+        "statement": "A service line does not cross the footprint of a building other than the one it serves.",
+        "formal": "for every service s(b): draw(s(b)) ∩ int(footprint(b')) = ∅ for all b' != b",
+        "parameter": None,
+        "applies_to": ["water", "electricity", "gas"],
+        "check": "check_services_buildings",
+        "repair": "route the service around the footprint (bent service along a passage) or share a neighbour's service",
+    },
+    {
         "id": "C1",
         "name": "right_angle_crossings",
         "statement": "Every crossing of a network edge with a street edge or another utility is perpendicular (RAC drawing).",

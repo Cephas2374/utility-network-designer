@@ -131,3 +131,39 @@ python engine/run_corridor_p4.py      # P4 analyses -> corridor_p4.json/.pkl (~3
 python engine/figures_p4.py           # P4 figures and drawings
 papers/P4_corridors/build.ps1         # numbers.tex (make_numbers_p4.py) + PDF
 ```
+
+## Fix 2026-11-22 — plugin elevation route (plugin v2.0.1, P5 SoftwareX)
+
+- **Symptom.** The QGIS plugin on the Gombe layers designed K=4 water inflows and passed 77/78 checks
+  (fire residual 17.1 m < 20 m), against K=3 and 78/78 in P1–P4, even with the P1 lane order and the
+  papers' population.
+- **Cause.** Elevation. The papers sample SRTM on its native grid, smoothed by a 3x3 mean, bilinearly
+  (`dem.SRTM`). The plugin read the raw pixel under each vertex (`provider.sample`) of a DEM warped to
+  UTM 33S at 30 m. Over the 14,375 vertices of the design, ground levels differed by 0.65 m on average
+  and 7.2 m at most (`dev/measure_dem_old_route.py`); with three inflows five nodes fell below the
+  minimum pressure.
+- **Fix.** `dem.GridDEM` samples any raster as `dem.SRTM` does (identical to 6e-12 m on the native grid);
+  the plugin reads the band once and samples through it (parameter "Smooth the DEM", default on);
+  `data/test/gombe_dem.tif` is now the SRTM tile clipped on its native grid (EPSG:4326), the old warped
+  file is kept as `gombe_dem_utm30_old.tif`. `dem.SRTM` itself is unchanged, so P1–P4 are unaffected.
+- **Check.** `dev/run_plugin_regression.py` (QGIS Python): K=3, 78/78, all 347 metrics identical
+  (run time excluded), validation table identical.
+- **Also found.** A regression script must keep a reference to the Processing provider it registers,
+  or Python collects it and QGIS reports "Error creating algorithm from createInstance()".
+
+## Fix 2026-11-23 — Bukavu transferability test (P5)
+
+- **Tap exchange (corridor.Taps._exchange_fixed).** The first plugin run on northern Ibanda (Bukavu) left
+  8 crossing service pairs (G1 failed for water, electricity and gas). In every pair, the exchange of P1's
+  uncrossing lemma with the facade points kept shortens the pair and removes the crossing; `_repair`
+  recomputed each facade (nearest footprint point to the new tap) before testing and then rejected the
+  exchange. New last step: the lemma's own exchange (accept if shorter and no street clipped; total length
+  strictly decreases, so it stops), run only when crossings survive `_retap`. Bukavu: 9 exchanges, 0 left.
+  Gombe: never reached; `run_gombe.py --legacy-kerb-order` gives 0 metric differences and the 78 checks
+  identical (results/gombe_regression_g13).
+- **New rule G13 (services clear of other buildings).** Services are straight tap-to-facade segments and
+  nothing checked them against the buildings they pass. `validate.check_services_buildings`; reported, not
+  repaired. Stored design of P1-P4: 4,345 of 12,273 services cross another building (35.4 %; dev/audit_g13.py);
+  Bukavu 48 %. P1 was already submitted when this was found: to be added in its revision.
+- **Pressure zones.** One zone needs z_max - z_min <= p_max - p_min (60 m). Northern Ibanda spans ~105 m,
+  so rule H (max pressure 80 m) fails by necessity; the engine designs one zone.

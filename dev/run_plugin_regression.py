@@ -77,13 +77,21 @@ print(f"design: {time.time() - t:.0f} s")
 ref = json.loads((ROOT / "results" / "gombe" / "metrics.json").read_text())
 new = json.loads((out / "metrics.json").read_text())
 TIMING = {"runtime_s"}  # wall-clock time, not a result of the design
+import pandas as pd  # noqa: E402
+_v = pd.read_csv(out / "validation.csv")
+if "G13" in set(_v["rule"]):  # G13 (2026-11-23) postdates the stored design: count the 78 original checks
+    _o = _v[_v["rule"] != "G13"]
+    new["validation"] = dict(passed=int(_o["ok"].sum()), total=len(_o))
 d = diff({k: v for k, v in ref.items() if k not in TIMING}, {k: v for k, v in new.items() if k not in TIMING})
 leaves = lambda x: sum(leaves(v) for v in x.values()) if isinstance(x, dict) else (
     sum(leaves(v) for v in x) if isinstance(x, list) else 1)
 import pandas as pd  # noqa: E402
 va, vb = pd.read_csv(ROOT / "results" / "gombe" / "validation.csv"), pd.read_csv(out / "validation.csv")
+# G13 (added 2026-11-23) postdates the stored design of the papers: compare the 78 original checks
+g13 = vb[vb["rule"] == "G13"].to_dict("records")
+vb = vb[vb["rule"] != "G13"].reset_index(drop=True)
 res = dict(mode=mode, K=new["water"]["K"], passed=new["validation"]["passed"], total=new["validation"]["total"],
-           leaves=leaves({k: v for k, v in ref.items() if k not in TIMING}), differing=len(d), validation_identical=bool(va.equals(vb)), first=d[:15])
+           leaves=leaves({k: v for k, v in ref.items() if k not in TIMING}), differing=len(d), validation_identical=bool(va.equals(vb)), g13=g13, first=d[:15])
 (out / "regression.json").write_text(json.dumps(res, indent=1, default=str))
 print(json.dumps(res, indent=1, default=str))
 app.exitQgis()

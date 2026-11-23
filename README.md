@@ -1,4 +1,4 @@
-# Utility Network Designer (graph engine) — v2.0.1
+# Utility Network Designer (graph engine) — v2.1.0
 
 A QGIS Processing plugin that designs, validates and analyses the **water, electricity and gas
 distribution networks** of a district on its plane street graph, from three layers: streets, buildings
@@ -26,7 +26,8 @@ python engine/run_gombe.py --legacy-kerb-order --out results/gombe_regression   
 "C:\Program Files\QGIS 3.44.12\bin\python-qgis-ltr.bat" dev/run_plugin_regression.py   # the plugin inside QGIS
 ```
 Both compare every metric and rule check with `results/gombe/` (the design of the papers).
-`dev/test_plugin_qgis.py` runs the three algorithms on the unnoded test district `data/test/test_district.gpkg`.
+`dev/test_plugin_qgis.py` runs the three algorithms on the unnoded test district `data/test/test_district.gpkg`;
+`dev/run_plugin_bukavu.py` runs them on northern Ibanda, Bukavu (`data/test/bukavu_ibanda_north.gpkg`).
 
 ## Data
 `data/gombe` and `data/test`: © OpenStreetMap contributors (ODbL 1.0), Google Open Buildings v3 (CC BY 4.0),

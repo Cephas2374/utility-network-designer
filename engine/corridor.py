@@ -85,6 +85,8 @@ class Taps:
         self._uncross()
         self._repair()
         self._retap()
+        if self.stats.get("service_crossings_left"):
+            self._exchange_fixed()  # only when crossings remain, so designs without any are unchanged
         for r in self.rows:
             r.pop("alternatives", None)
             r.pop("options", None)
@@ -330,6 +332,45 @@ class Taps:
                 r.update(old)
         clip, pairs = self._conflicts()
         self.stats.update(retapped=moved, service_crossings_left=len(pairs), street_clipping_left=len(clip))
+
+    def _exchange_fixed(self, rounds=500):
+        """Last step, for crossing pairs that survive every repair: the exchange of the uncrossing lemma
+        (P1) itself, with the facade points kept.  _repair recomputes the facade of each building after
+        an exchange (nearest footprint point to its new tap), which can make the exchanged services cross
+        again; with the facades kept, the lemma guarantees a shorter pair.  As in P1, an exchange is
+        accepted if it shortens the pair and neither service then clips a street; the total length of
+        the services strictly decreases, so the loop stops (and rounds bounds it in any case).
+
+        Added 2026-11-23 (P5, Bukavu): removes crossings that _repair rejected in dense blocks.  It only
+        acts on pairs left after _retap, so designs with none (Gombe, P1-P4) are unchanged."""
+        moved = 0
+        for _ in range(rounds):
+            clip, pairs = self._conflicts()
+            if not pairs:
+                break
+            progress = False
+            for a, b in pairs:
+                if a.get("host") or b.get("host") or any(o.get("host") in (a["bldg_id"], b["bldg_id"]) for o in self.rows):
+                    continue  # services others hang on keep their taps
+                keep = {id(r): {k: r[k] for k in ("eid", "s", "side", "path", "dist", "perpendicular")} for r in (a, b)}
+                before = self._service(a).length + self._service(b).length
+                a["eid"], a["s"], b["eid"], b["s"] = b["eid"], b["s"], a["eid"], a["s"]
+                for r in (a, b):
+                    r["path"] = [self._tap_point(r), r["facade"]]
+                    r["dist"] = float(self._service(r).length)
+                ok = (a["dist"] + b["dist"] < before - 1e-9 and not self._hits_street(a) and not self._hits_street(b))
+                if ok:
+                    for r in (a, b):
+                        r["side"] = self._side_of(r)
+                    moved += 1
+                    progress = True
+                    break  # pairs changed: recompute them
+                for r in (a, b):
+                    r.update(keep[id(r)])
+            if not progress:
+                break
+        clip, pairs = self._conflicts()
+        self.stats.update(exchanged_fixed=moved, service_crossings_left=len(pairs), street_clipping_left=len(clip))
 
     @staticmethod
     def _hangs_on(row, bldg_id, byid):

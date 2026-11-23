@@ -183,6 +183,7 @@ def design(inp: Inputs, packs=None, cr=None, log=print):
                                   extra=elec_rows(er, packs, G), exclude_terminals=mvc)
     val += validate.check_network("gas", [LP, MP], G, packs, rows, srcs["gas"], cor, extra=gas_rows(gr_, packs, LP, MP))
     val += crossing_rows(cross, cr)
+    val += validate.check_services_buildings(rows, b)  # G13 (added 2026-11-23)
     vdf = pd.DataFrame(val)
     log(f"  {vdf['ok'].sum()} / {len(vdf)} checks pass")
     for r in vdf[~vdf["ok"]].itertuples():

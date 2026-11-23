@@ -177,3 +177,32 @@ def check_spacing(u, N, spacing, points, rule="G11", what="components"):
         worst = max(worst, g)
     return _row(rule, u, f"max distance to nearest {what} along a run (m)", round(worst, 1), spacing / 2,
                 worst <= spacing / 2 + 1e-6)
+
+
+def service_building_crossings(rows, buildings):
+    """Services (tap -> facade, or shared branches) that cross the footprint of another building.
+    buildings: GeoDataFrame with bldg_id and footprint geometry.  Returns (crossing services, services)."""
+    from shapely import STRtree
+    from shapely.geometry import LineString
+    b = buildings.reset_index() if "bldg_id" not in buildings.columns else buildings
+    fps, ids = list(b.geometry), list(b["bldg_id"])
+    tree = STRtree(fps)
+    n = bad = 0
+    for r in rows:
+        path = r.get("path")
+        if not path or len(path) < 2:
+            continue
+        g = LineString(path)
+        if g.length == 0:
+            continue
+        n += 1
+        if any(ids[k] != r["bldg_id"] for k in tree.query(g, predicate="crosses")) or \
+                any(ids[k] != r["bldg_id"] for k in tree.query(g, predicate="within")):
+            bad += 1
+    return bad, n
+
+
+def check_services_buildings(rows, buildings):
+    """G13: services clear of other buildings (one row for the services shared by the three utilities)."""
+    bad, n = service_building_crossings(rows, buildings)
+    return [_row("G13", "services", "services crossing another building", bad, 0, bad == 0, f"{n} services")]
