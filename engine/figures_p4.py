@@ -4,7 +4,6 @@ junction plan, single-line diagram), the street-cut map and the charts.
 
     python engine/figures_p4.py [profile|section|junction|sld|cuts|charts]
 """
-import pickle
 import sys
 from pathlib import Path
 
@@ -18,9 +17,9 @@ from shapely.geometry import Point
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from engine import figstyle as fs, vertical  # noqa: E402
+from engine import store  # noqa: E402
 from engine.config import RESULTS, ROOT, load_rules  # noqa: E402
-from engine.figures_p1_results import net_lines  # noqa: E402
-from engine.figures_p2 import binned, bin_legend, map_stack, panel_label  # noqa: E402
+from engine.figures_p2 import binned, bin_legend, map_stack  # noqa: E402
 
 OUT = ROOT / "papers" / "P4_corridors" / "figures"
 RES = RESULTS
@@ -49,8 +48,8 @@ def layouts(p):
 
 
 def load():
-    m = pickle.load(open(RES / "model.pkl", "rb"))
-    p = pickle.load(open(RES / "corridor_p4.pkl", "rb"))
+    m = store.load(RES / "model.pkl")
+    p = store.load(RES / "corridor_p4.pkl")
     m["cr"] = dict(m["cr"], vertical=load_rules()[1]["vertical"])
     return m, p
 
@@ -349,7 +348,7 @@ def fig_cuts():
     """Street edges coloured by the connections that lose two or three utilities when the street is
     dug up."""
     m, p = load()
-    S, C = m["S"], m["G"].graph["corridor"]
+    S = m["S"]
     fig, (ax,) = map_stack(1)
     rows = {r["eid"]: r for r in p["cuts"]}
     segs, vals = [], []

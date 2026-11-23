@@ -19,7 +19,8 @@ PLUGIN = Path(__file__).resolve().parent / "utility_network_graph"
 # figures_p4 (drawings algorithm) needs figures_p1_results and figures_p2: they ship
 SKIP = {"make_numbers_p1.py", "make_numbers_p2.py", "make_numbers_p3.py", "make_numbers_p4.py",
         "make_numbers_p5.py", "make_numbers_p5x.py", "figures_p1.py", "figures_p3.py",
-        "prepare_gombe_data.py", "prepare_bukavu_data.py"}
+        "prepare_gombe_data.py", "prepare_bukavu_data.py",
+        "run_gombe.py"}  # the papers' runner (the plugin is the other adapter of the pipeline)
 
 
 def main():

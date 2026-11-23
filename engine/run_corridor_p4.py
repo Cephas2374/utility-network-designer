@@ -9,17 +9,15 @@ Writes corridor_p4.json and corridor_p4.pkl next to model.pkl.
 """
 import copy
 import json
-import pickle
 import sys
 import time
-from collections import defaultdict
 from pathlib import Path
 
-import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from engine import electricity_analysis as ea, streetcuts, vertical  # noqa: E402
+from engine import store  # noqa: E402
 from engine.config import RESULTS, load_rules  # noqa: E402
 
 LAYOUTS = {"p1": None, "compatible": ["gas", "water", "electricity"]}
@@ -34,7 +32,7 @@ def main(results=None, log=None):
     RESULTS = Path(results) if results else _arg_results()
     t0 = time.time()
     log = log or (lambda s: print(f"[{time.strftime('%H:%M:%S')}] {s}", flush=True))
-    m = pickle.load(open(RESULTS / "model.pkl", "rb"))
+    m = store.load(RESULTS / "model.pkl")
     live = load_rules()
     m["cr"] = dict(m["cr"], vertical=live[1]["vertical"])  # rule section added for P4
     for sec in ("capacity", "mv_cable"):
@@ -105,8 +103,7 @@ def main(results=None, log=None):
                   if not isinstance(v, (list, dict))}
     out["runtime_s"] = time.time() - t0
     (RESULTS / "corridor_p4.json").write_text(json.dumps(out, indent=1, default=str))
-    with open(RESULTS / "corridor_p4.pkl", "wb") as fh:
-        pickle.dump(dict(out=out, keep=keep, cuts=rows, gate=gate), fh)
+    store.save(dict(out=out, keep=keep, cuts=rows, gate=gate), RESULTS / "corridor_p4.pkl")
     log(f"done in {out['runtime_s']:.0f} s")
 
 

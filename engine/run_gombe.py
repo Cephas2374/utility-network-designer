@@ -9,7 +9,6 @@ Outputs: networks.gpkg, metrics.json, validation.csv, customer_register.csv, mod
 figures), run.log.  The papers P1-P4 read results/gombe; a run whose kerb order differs from the stored
 design's refuses to overwrite it unless --force is given.  The design itself is engine/pipeline.py.
 """
-import pickle
 import sys
 import time
 from pathlib import Path
@@ -19,6 +18,7 @@ import geopandas as gpd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from engine.config import CRS, DATA, RESULTS, load_rules  # noqa: E402
+from engine import store  # noqa: E402
 from engine.dem import SRTM  # noqa: E402
 from engine.pipeline import MAJOR, Inputs, design, write_outputs  # noqa: E402,F401  (MAJOR: used by other scripts)
 from rules.kinshasa_profile import get_kinshasa_profile  # noqa: E402
@@ -48,7 +48,7 @@ def main():
     kerb = LEGACY_KERB_ORDER if "--legacy-kerb-order" in sys.argv else cr["corridor_layout"]["kerb_order"]
     stored = out / "model.pkl"
     if stored.exists() and "--force" not in sys.argv:
-        old = pickle.load(open(stored, "rb"))["cr"]["corridor_layout"]["kerb_order"]
+        old = store.load(stored)["cr"]["corridor_layout"]["kerb_order"]
         if list(old) != list(kerb):
             sys.exit(f"{out} holds a design with kerb order {old} (papers P1-P4); this run uses {kerb}.  "
                      f"Use --legacy-kerb-order to reproduce it, or --force to overwrite it.")

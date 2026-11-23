@@ -7,7 +7,6 @@ import math
 from collections import defaultdict
 
 import networkx as nx
-import numpy as np
 
 from . import design
 from .demand import diversity_factor, diversity_factor_monotone
@@ -47,7 +46,6 @@ def design_electricity(Gc, taps_by_bldg, bldg, packs, mv_infeed, service_len, lo
         d["bldgs"].append(b)
     svc_kva = {t: d["svc"] for t, d in agg.items()}
     mv_taps = [t for t, d in agg.items() if d["svc"] >= cap["mv_customer_min_kva"]]
-    mv_customers = [b for t in mv_taps for b in agg[t]["bldgs"]]
     demand = {t: {k: d[k] for k in ("P", "units", "w")} for t, d in agg.items() if t not in set(mv_taps)}
     load_fn = lambda recs: _kva(recs, ed, pf)
     candidate = lambda v: not isinstance(v, tuple) or v[0] == "t"  # junctions or in front of a plot

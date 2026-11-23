@@ -6,7 +6,6 @@ stay legible where a corner is not completely empty. Charts and colour bars are 
 Sizes are scaled with the figure width so that they print at about 7 pt once the figure is shrunk to the
 text width of the paper (13.9 cm).
 """
-import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import FancyBboxPatch, Rectangle
 
@@ -62,7 +61,7 @@ def furnish(fig, corners=None):
     for ax in maps:
         bb = ax.get_window_extent()
         ax_px = (bb.x0, bb.y0, bb.x1, bb.y1)
-        (xa, xb), (ya, yb) = ax.get_xlim(), ax.get_ylim()
+        xa, xb = ax.get_xlim()
         m_per_px = (xb - xa) / bb.width
         pt = fig.dpi / 72
         # bar lengths long enough for the "0" and end labels, short enough to fit in a corner

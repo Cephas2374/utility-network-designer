@@ -4,7 +4,6 @@ segments, N-1 segment failures, District Metered Areas, fire flow at every hydra
 sensitivity, bill of quantities, EPANET export and cross-check.
 """
 import math
-import subprocess
 from collections import defaultdict
 from pathlib import Path
 
@@ -13,11 +12,9 @@ import numpy as np
 import scipy.sparse as sp
 from scipy.sparse.csgraph import connected_components
 
-from . import design
-from .water import GGA, HW_N, hw_r
+from .water import GGA
 
 ROOT = Path(__file__).resolve().parents[1]
-EPANET_PY = ROOT / "dev" / ".venv_epanet" / "Scripts" / "python.exe"
 
 
 # -- hydraulic model on a (possibly reduced) network ---------------------------------
@@ -449,18 +446,8 @@ def epanet_check(N, sources, packs, workdir):
     workdir.mkdir(parents=True, exist_ok=True)
     inp = workdir / "gombe_water.inp"
     ids, edges = write_inp(N, sources, packs, inp)
-    script = ROOT / "dev" / "epanet_run.py"
-    script.write_text(
-        "import sys, wntr\n"
-        "wn = wntr.network.WaterNetworkModel(sys.argv[1])\n"
-        "res = wntr.sim.EpanetSimulator(wn).run_sim(file_prefix=sys.argv[2])\n"
-        "res.node['head'].iloc[0].to_csv(sys.argv[2] + '_head.csv')\n"
-        "res.link['flowrate'].iloc[0].to_csv(sys.argv[2] + '_flow.csv')\n")
     prefix = str((workdir / "epanet").resolve())
-    pr = subprocess.run([str(EPANET_PY), str(script), str(inp.resolve()), prefix], capture_output=True, text=True,
-                        cwd=str(workdir.resolve()))
-    if pr.returncode != 0:
-        raise RuntimeError(pr.stderr[-2000:])
+    _run_epanet(inp.resolve(), prefix, workdir.resolve())
     import pandas as pd
     h = pd.read_csv(prefix + "_head.csv", index_col=0).iloc[:, 0]
     f = pd.read_csv(prefix + "_flow.csv", index_col=0).iloc[:, 0]
@@ -471,3 +458,33 @@ def epanet_check(N, sources, packs, workdir):
     return dict(max_head_diff_m=float(max(dh)), mean_head_diff_m=float(np.mean(dh)),
                 max_flow_diff_ls=float(max(df) * 1000), n_nodes=len(dh), n_pipes=len(df),
                 head_engine=[N.nodes[v]["head_m"] for v in N], head_epanet=[float(h[ids[v]]) for v in N])
+
+
+def _run_epanet(inp, prefix, workdir):
+    """EPANET 2.2 through WNTR: writes <prefix>_head.csv and <prefix>_flow.csv.
+
+    In-process if WNTR is installed in this Python (e.g. the Python of QGIS).  Otherwise, on the
+    authors' machine only, in the separate environment dev/.venv_epanet that the papers used, through
+    dev/epanet_venv.py (not shipped with the plugin, which therefore runs no subprocess).  Nothing is written as code at run time.  Raises RuntimeError if neither is available (the
+    analyses then report that the EPANET cross-check was skipped).
+
+    Changed 2026-11-23 for the QGIS plugin repository's security scan: the helper script used to be
+    written to disk before each run."""
+    try:
+        import wntr
+    except ImportError:
+        wntr = None
+    if wntr is not None:
+        wn = wntr.network.WaterNetworkModel(str(inp))
+        res = wntr.sim.EpanetSimulator(wn).run_sim(file_prefix=prefix)
+        res.node["head"].iloc[0].to_csv(prefix + "_head.csv")
+        res.link["flowrate"].iloc[0].to_csv(prefix + "_flow.csv")
+        return
+    helper = ROOT / "dev" / "epanet_venv.py"  # the papers' environment; not shipped with the plugin
+    if not helper.exists():
+        raise RuntimeError("EPANET cross-check skipped: install the Python package 'wntr' to enable it")
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("epanet_venv", helper)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    mod.run(inp, prefix, workdir)

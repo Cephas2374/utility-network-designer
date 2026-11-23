@@ -133,7 +133,6 @@ def _size_lp(LP, sites, cells, demand, g, ID, s_rel):
     sizes = [od for od in g["standard_sizes"] if od >= 32]
     parent, order, down = design.orient(LP, sites, {t: {"Q": demand[t]["Q"]} for t in demand})
     p = {}
-    worst = math.inf
     qd_max = 0.0
     for v in order:
         if parent[v] is None:

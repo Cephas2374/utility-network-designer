@@ -8,10 +8,9 @@ import math
 from collections import defaultdict, deque
 
 import networkx as nx
-import numpy as np
 
 from . import design
-from .electricity import _g, _service_drop, _service_size, _size_cell
+from .electricity import _g, _service_drop, _size_cell
 
 
 # -- loads, as in design_electricity ------------------------------------------------------

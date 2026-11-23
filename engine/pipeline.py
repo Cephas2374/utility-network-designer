@@ -9,7 +9,6 @@ Every step is the one of paper P1: demand, plane street graph, taps and corridor
 electricity, gas, corridor side assignment, method comparison, validation.
 """
 import json
-import pickle
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -21,7 +20,7 @@ import numpy as np
 import pandas as pd
 from shapely.geometry import LineString, Point
 
-from . import crossings, demand, design as dsg, electricity, gas, validate, water
+from . import crossings, demand, design as dsg, electricity, gas, store, validate, water
 from .config import load_rules
 from .corridor import CorridorGraph, Taps
 from .planar import StreetGraph
@@ -216,8 +215,7 @@ def write_outputs(res, folder):
     register(m["rows"], m["b"].set_index("bldg_id"), C, m["er"], m["gr"], m["wi"], cor).to_csv(
         folder / "customer_register.csv", index=False)
     (folder / "metrics.json").write_text(json.dumps(res["metrics"], indent=1, default=str))
-    with open(folder / "model.pkl", "wb") as fh:
-        pickle.dump(m, fh)
+    store.save(m, folder / "model.pkl")
 
 
 def model_context(m):

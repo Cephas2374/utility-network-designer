@@ -20,10 +20,8 @@ Drawing convention
   * A leg or service of u crosses the main of w iff w lies between u and the point it heads
     for on the cross-section (interval stabbing).
 """
-import math
 from collections import defaultdict
 
-import numpy as np
 
 from .config import separation, vertical_clearance
 

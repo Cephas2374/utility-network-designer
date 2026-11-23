@@ -7,7 +7,6 @@ Writes elec_p3.json and elec_p3.pkl next to model.pkl.
 """
 import copy
 import json
-import pickle
 import sys
 import time
 from collections import Counter
@@ -19,6 +18,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from engine import electricity_analysis as ea  # noqa: E402
+from engine import store  # noqa: E402
 from engine.config import RESULTS, load_rules  # noqa: E402
 from engine.pipeline import model_context  # noqa: E402
 
@@ -33,7 +33,7 @@ def main(results=None, log=None):
     RESULTS = Path(results) if results else _arg_results()
     t0 = time.time()
     log = log or (lambda s: print(f"[{time.strftime('%H:%M:%S')}] {s}", flush=True))
-    m = pickle.load(open(RESULTS / "model.pkl", "rb"))
+    m = store.load(RESULTS / "model.pkl")
     G, b, rows, packs, F, er, infeed = m["G"], m["b"], m["rows"], m["packs"], m["Fe"], m["er"], m["infeed"]
     # rule keys added after model.pkl was written come from the live pack; design values are kept
     live = load_rules()[0]["electricity"]
@@ -144,8 +144,7 @@ def main(results=None, log=None):
                      for k, v in gh.items()}
     out["runtime_s"] = time.time() - t0
     (RESULTS / "elec_p3.json").write_text(json.dumps(out, indent=1, default=str))
-    with open(RESULTS / "elec_p3.pkl", "wb") as fh:
-        pickle.dump(dict(out=out, F2=F2, variants=variants, cell=cell, fr=fr_all, lv_sites=lv.sites), fh)
+    store.save(dict(out=out, F2=F2, variants=variants, cell=cell, fr=fr_all, lv_sites=lv.sites), RESULTS / "elec_p3.pkl")
     log(f"done in {out['runtime_s']:.0f} s")
 
 

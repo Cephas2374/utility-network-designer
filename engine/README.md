@@ -167,3 +167,16 @@ papers/P4_corridors/build.ps1         # numbers.tex (make_numbers_p4.py) + PDF
   Bukavu 48 %. P1 was already submitted when this was found: to be added in its revision.
 - **Pressure zones.** One zone needs z_max - z_min <= p_max - p_min (60 m). Northern Ibanda spans ~105 m,
   so rule H (max pressure 80 m) fails by necessity; the engine designs one zone.
+
+## Fix 2026-11-23 — QGIS plugin repository security scan (plugin 2.1.2)
+
+- **pickle.** The scan (Bandit) flagged 20 uses of pickle. Every design and result file is now written and
+  read through `engine/store.py`; `store.load` uses an unpickler that resolves only the classes a design is
+  made of (numpy, pandas, pyarrow, geopandas, shapely, networkx, pyproj, engine) and refuses the rest, so a
+  tampered model.pkl raises `UnsafeFileError` instead of running code (tested with a payload calling
+  os.system). Strict Bandit (nosec ignored) now reports one finding: the import in store.py.
+- **subprocess.** `water_analysis.epanet_check` wrote dev/epanet_run.py and ran it in dev/.venv_epanet. It now
+  runs WNTR in-process when installed, otherwise the papers' environment through dev/epanet_venv.py (not
+  shipped), otherwise skips. The plugin contains no subprocess.
+- **flake8.** 21 unused imports/variables removed from the shipped engine (no behaviour change; Gombe
+  regression rerun). `run_gombe.py` is no longer shipped in the plugin.

@@ -7,7 +7,6 @@ Writes water_p2.json and water_p2.pkl next to model.pkl.
 """
 import copy
 import json
-import pickle
 import sys
 import time
 from pathlib import Path
@@ -18,6 +17,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from engine import water, water_analysis as wa  # noqa: E402
+from engine import store  # noqa: E402
 from engine.config import RESULTS, load_rules  # noqa: E402
 from engine.pipeline import model_context  # noqa: E402
 
@@ -30,7 +30,7 @@ def main(results=None, log=None):
     RESULTS = Path(results) if results else _arg_results()
     t0 = time.time()
     log = log or (lambda s: print(f"[{time.strftime('%H:%M:%S')}] {s}", flush=True))
-    m = pickle.load(open(RESULTS / "model.pkl", "rb"))
+    m = store.load(RESULTS / "model.pkl")
     G, S, b, rows, packs = m["G"], m["S"], m["b"], m["rows"], m["packs"]
     # rule keys added after model.pkl was written (e.g. fire_residual_mwc) come from the live pack;
     # keys present in the design keep their design values
@@ -147,7 +147,7 @@ def main(results=None, log=None):
             f"max flow difference {out['epanet']['max_flow_diff_ls']:.4f} L/s")
     except Exception as exc:  # report, do not hide
         out["epanet"] = dict(error=str(exc))
-        log(f"  EPANET check failed: {exc}")
+        log(f"  {exc}" if str(exc).startswith("EPANET cross-check skipped") else f"  EPANET check failed: {exc}")
 
     log("DMAs")
     dm = wa.dmas(N, sources, taps, packs["water"]["optimization"]["dma_target_connections"], hyd, log=log)
@@ -196,8 +196,7 @@ def main(results=None, log=None):
 
     out["runtime_s"] = time.time() - t0
     (RESULTS / "water_p2.json").write_text(json.dumps({k: v for k, v in out.items()}, indent=1, default=str))
-    with open(RESULTS / "water_p2.pkl", "wb") as fh:
-        pickle.dump(dict(out=out, Nt=Nt, ti=ti, dma=dm, hydrants=hn, sources=sources), fh)
+    store.save(dict(out=out, Nt=Nt, ti=ti, dma=dm, hydrants=hn, sources=sources), RESULTS / "water_p2.pkl")
     log(f"done in {out['runtime_s']:.0f} s")
 
 

@@ -83,7 +83,7 @@ def split_vertices(N, max_degree, exempt=None):
         x0, y0 = N.nodes[v]["xy"]
         nbrs = sorted(N.neighbors(v), key=lambda w: _angle(N, v, w))
         # first block keeps D-1 edges, middle blocks D-2, last block D-1 (path of tees)
-        blocks, i = [], 0
+        i = 0
         sizes = []
         rest = k
         while rest > 0:

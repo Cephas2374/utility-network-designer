@@ -208,7 +208,6 @@ def analyse(cor, m, packs, cr):
         dmax = max(max(Dm[u].values(), default=0.0), Ds[u]) if u != "electricity" else vr["outer_dimension_m"]["electricity_main"]
         stack[u] = d_std[u] if z is None else max(d_std[u], z)
         z = stack[u] + dmax + max(vertical_clearance(cr, u, w) for w in cor.U if w != u)
-    base = {}
     for u in cor.U:
         vol = std = 0.0
         for e in cor.E[u]:

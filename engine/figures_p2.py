@@ -3,7 +3,6 @@ Figures of paper P2 (from results/gombe/model.pkl and results/gombe/water_p2.pkl
 
     python engine/figures_p2.py [network|n1|dma|fire|charts]
 """
-import pickle
 import sys
 from pathlib import Path
 
@@ -17,6 +16,7 @@ from matplotlib.lines import Line2D
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from engine import figstyle as fs  # noqa: E402
+from engine import store  # noqa: E402
 from engine.config import RESULTS, ROOT  # noqa: E402
 from engine.figures_p1_results import _aspect, base_map, net_lines, read  # noqa: E402
 
@@ -26,8 +26,8 @@ NAME = {"looped": "looped", "tree": "shortest-path forest"}
 
 
 def load():
-    m = pickle.load(open(RESULTS / "model.pkl", "rb"))
-    p = pickle.load(open(RESULTS / "water_p2.pkl", "rb"))
+    m = store.load(RESULTS / "model.pkl")
+    p = store.load(RESULTS / "water_p2.pkl")
     return m, p
 
 
@@ -72,7 +72,7 @@ def bin_legend(ax, bounds, colors, fmt, title, y=-0.01, extra=()):
 
 # -----------------------------------------------------------------------------
 def fig_network():
-    m = pickle.load(open(RESULTS / "model.pkl", "rb"))
+    m = store.load(RESULTS / "model.pkl")
     N, C, wi = m["Nw"], m["G"].graph["corridor"], m["wi"]
     fig, (a, b) = map_stack(2)
     segs, data = net_lines(N, C)
@@ -117,7 +117,7 @@ def fig_tree_path():
     from engine.config import DATA
     from engine.dem import SRTM
     from engine.run_gombe import MAJOR
-    m = pickle.load(open(RESULTS / "model.pkl", "rb"))
+    m = store.load(RESULTS / "model.pkl")
     G, S, b, rows, packs = m["G"], m["S"], m["b"], m["rows"], m["packs"]
     C = G.graph["corridor"]
     bi = b.set_index("bldg_id")

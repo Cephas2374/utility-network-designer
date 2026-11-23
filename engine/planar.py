@@ -15,7 +15,7 @@ from collections import defaultdict
 import networkx as nx
 import numpy as np
 from shapely import STRtree, polygonize
-from shapely.geometry import LineString, Point
+from shapely.geometry import Point
 from shapely.ops import substring
 
 ROUND = 2  # Vertex snapping precision (cm): noded street data share exact end points

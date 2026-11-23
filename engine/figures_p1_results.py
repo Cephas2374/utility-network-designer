@@ -3,13 +3,11 @@ Result figures of paper P1 (from results/gombe/model.pkl).
 
     python engine/figures_p1_results.py [networks|rac|methods]
 """
-import pickle
 import sys
 from pathlib import Path
 
 import geopandas as gpd
 import matplotlib.pyplot as plt
-import networkx as nx
 import numpy as np
 from matplotlib.collections import LineCollection
 from matplotlib.lines import Line2D
@@ -18,8 +16,9 @@ from shapely.geometry import LineString, Point, box
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from engine import figstyle as fs  # noqa: E402
+from engine import store  # noqa: E402
 from engine import validate  # noqa: E402
-from engine.config import CRS, DATA, RESULTS, ROOT  # noqa: E402
+from engine.config import DATA, RESULTS, ROOT  # noqa: E402
 from engine.crossings import Corridor  # noqa: E402
 
 OUT = ROOT / "papers" / "P1_graph_formulation" / "figures"
@@ -27,7 +26,7 @@ F = DATA / "gombe_inputs.gpkg"
 
 
 def load():
-    return pickle.load(open(RESULTS / "model.pkl", "rb"))
+    return store.load(RESULTS / "model.pkl")
 
 
 def read(layer):
